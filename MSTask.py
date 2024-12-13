@@ -58,6 +58,14 @@ class CTaskReadIDForDraw:
         N_ID = 0
         path_library = []
         op_FILL_LIST_PATH_ID(self.dp.myCFG.B4_PATH_LIBRARY_RESULT, path_library)
+        # if self.dp.myCFG.B2_TYPE_IDENTIFICATION_RESULT == CFG_TYPE_IDENTIFICATION_RESULT['DIA-NN']:
+        #
+        #     for path in self.dp.LIST_PATH_ID:
+        #         print(INFO_TO_USER_TaskReadID[0] + path)
+        #         functionRead = CFunctionParseIDForDIANN(self.dp)
+        #         functionRead.read(path)
+        #         print(INFO_TO_USER_TaskReadID[1] + str(self.dp.myID.N_ID - N_ID))
+        #         N_ID = self.dp.myID.N_ID
 
         if self.dp.myCFG.B2_TYPE_IDENTIFICATION_RESULT == CFG_TYPE_IDENTIFICATION_RESULT['MSFragger']:
 
@@ -86,14 +94,7 @@ class CTaskReadIDForDraw:
                 print(INFO_TO_USER_TaskReadID[1] + str(self.dp.myDDAID.N_PSM - N_ID))
                 N_ID = self.dp.myDDAID.N_PSM
 
-        elif self.dp.myCFG.B2_TYPE_IDENTIFICATION_RESULT == CFG_TYPE_IDENTIFICATION_RESULT['DIA-NN']:
 
-            for path in self.dp.LIST_PATH_ID:
-                print(INFO_TO_USER_TaskReadID[0] + path)
-                functionRead = CFunctionParseIDForDIANN(self.dp)
-                functionRead.read(path)
-                print(INFO_TO_USER_TaskReadID[1] + str(self.dp.myID.N_ID - N_ID))
-                N_ID = self.dp.myID.N_ID
 
         if N_ID > 1000000:  # 检查要画图的数目，如果大于1000000，输出信息，退出
 

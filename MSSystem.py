@@ -19,7 +19,7 @@ IO_NAME_FILE_EXPORT_Flow5 = ('DIA_Check.png', 'DIA_Check.svg')
 
 IO_NAME_FILE_EXPORT_Flow6 = ('DIA_MS1_Signal.txt', 'DIA_MS2_Signal.txt')
 
-IO_NAME_FILE_CONFIG = ('DIA_XLC_cfg_DIANN.txt',)
+IO_NAME_FILE_CONFIG = ('DIA_XLC_cfg_MaxDecoy.txt',)
 
 IO_NAME_FILE_EXPORT_XIC_MATRIX = ('out_XIC.txt')
 
@@ -27,7 +27,7 @@ CFG_TYPE_MS1 = {'MS1': 0}  # 可能有其他的，可能性不大
 
 CFG_TYPE_MS2 = {'MS2': 0, 'MGF': 1}
 
-CFG_TYPE_IDENTIFICATION_RESULT = {'DIA-NN':1,'MaxDIA': 5,'MSFragger':7,'MSFragger-pin':8}  # 在CTaskReadID中用到，判断鉴定结果文件类型，用对应的func进行读取
+CFG_TYPE_IDENTIFICATION_RESULT = {'MaxDIA': 5,'MSFragger':7,'MSFragger-pin':8}  # 在CTaskReadID中用到，判断鉴定结果文件类型，用对应的func进行读取
 
 UNIMOID_TO_STANDARD_MOD = {'UniMod:4': "Carbamidomethyl[C]", 'UniMod:35': "Oxidation[AnyC-termG]",
                            'UniMod:1': "Acetyl[AnyN-term]",

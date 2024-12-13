@@ -1,7 +1,5 @@
 import os
 import pickle
-import re
-
 from MSLogging import logGetError
 from MSData import Config
 from MSTool import toolGetIndexByWord, toolGetWord, toolGetNameFromPath, toolStr2List, toolGetWord1, \
@@ -372,7 +370,6 @@ class CFunctionParseIDForDIANN:
                     self.dp.myID.ID4_SEQ_WITH_MOD.append(
                         self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')))
                     self.dp.myID.ID0_SEQ.append(toolGetWord(line, i_SEQ, '\t'))
-                    self.dp.myID.ID17_TARGET.append(1)
                     self.dp.myID.ID5_PRECURSOR_MOZ_EXP.append(float(toolGetWord(line, i_PRECURSOR_MOZ_EXP, '\t')))
                     self.dp.myID.ID6_PRECURSOR_MOZ_CLC.append(VALUE_ILLEGAL)
                     self.dp.myID.ID7_CHARGE.append(int(toolGetWord(line, i_CHARGE, '\t')))
@@ -521,8 +518,6 @@ class CFunctionParseIDForMSFraggerPin:
 
     def __soldierParseMOD(self, inputStr):  # 各个鉴定结果导出的修饰格式不一样，搞成一样的格式，方便后续处理
 
-        inputStr = re.sub(r'[a-z]', '', inputStr)
-
         return op_STANDARDIZE_MOD_MSFraggerPin_BY_PRECURSOR(inputStr)
 
     def read(self, pathID):
@@ -574,7 +569,7 @@ class CFunctionParseIDForMSFraggerPin:
                 mod_dict = self.__captainParseMOD(seq_with_mod[2:-3])
                 seq = ''.join(filter(str.isupper, transition_group_id[2:-3]))
                 precursor_moz_clc = self.__captainCalMOZ(seq, mod_dict, charge)
-                a =  self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')[2:-3])
+
                 self.dp.myID.ID4_SEQ_WITH_MOD.append(
                     self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')[2:-3]))
                 self.dp.myID.ID0_SEQ.append(seq)

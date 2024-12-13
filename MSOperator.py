@@ -352,7 +352,6 @@ def op_CAL_MOLECULAR_MASS_FROM_FRAGMENT_LOSS(input_INI_ELEMENT: CINI.DICT0_ELEME
 def op_CAL_PERCURSOR_MOZ(input_INI: CINI, input_precursor: str, input_charge):
     precursor_sequence, mod_dic = op_DIVIDE_MOD_FROM_PRECURSOR(input_precursor)
     ion_num = len(precursor_sequence)
-
     mass_aa_sum = 0.0
     for i in range(ion_num):
         if (i + 1) in mod_dic.keys():
