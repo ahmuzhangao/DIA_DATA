@@ -1,0 +1,35 @@
+#[Ini files]
+INI_PATH_ELEMENT=ini/element.ini
+INI_PATH_AA=ini/aa.ini
+INI_PATH_MOD=ini/modification.ini
+
+#[Data]
+PATH_MS1=D:\Project\2023-9-2-ApuRerank\UltraVisual\data\raw-ms\HF_20210521_M100-Y900_DIA_1.ms1
+TYPE_MS1=0
+PATH_MS2=D:\Project\2023-9-2-ApuRerank\UltraVisual\data\raw-ms\HF_20210521_M100-Y900_DIA_1.ms2
+TYPE_MS2=0
+
+#[Type of task]
+TYPE_FLOW=1 #flow1就是重构色谱曲线
+
+#[Identification results]
+PATH_IDENTIFICATION_RESULT=D:\Project\2025DIA_XLC\Data\DIANN\report_test.tsv
+TYPE_IDENTIFICATION_RESULT=0 #'DIA-NN': 0, 'Spectronaut': 2,'DIA-NN_Lib':4,'MSFragger':5,'MSFragger-pin':6
+THRESHOLD_FDR=0.01
+FLAG_DYNAMIC_LIBRARY=0
+FLAG_DRAW=1 # 是否画图，1代表画图，0代表不画，画图会非常慢
+FRAG_NUM=14 # TopN强度碎片离子曲线，0代表重构所有理论碎片离子，建议设为12（DIANN就是这么干的）
+
+# [Quantitation]
+DIA_RT_HALF_WIN_IN_MIN=0.5 # 时间窗口，0.5代表左右0.5分钟，共1分钟
+DIA_ACCURACY_HALF_WIN_PEAK=20 # 阈值，默认20ppm
+DIA_TYPE_ACCURACY_HALF_WIN_PEAK=0
+DIALF_TYPE_MODEL=0
+FLAG_CALIBRATE_RT=0
+DIALF_PATH_CALIBRATE_RT=
+DIALF_FLAG_DECOY=0
+DIALF_PROCESS_NUM=0
+
+#[Export]
+PATH_EXPORT=D:\Project\2025DIA_XLC\Data\DIANN\output\
+TYPE_EXPORT=1
