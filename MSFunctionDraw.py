@@ -108,8 +108,6 @@ class CFunctionDrawDIACheck:
                     del dataMS2
             del dataMS1
 
-
-
     def __GetPlotPepText(self, clc_pep, mod_dic: dict):
         # 顶部肽段标签
         pep_text = ''
@@ -623,14 +621,6 @@ class CFunctionDrawDIACheck:
                     plt.close(fig_Check)
                 else:
                     self.__soliderGetDIACurve(tmp_seed, tmp_evidence, tmp_index)  # 画母离子和Lib中by离子的色谱曲线
-
-                    with open(self.dp.myCFG.D1_PATH_EXPORT + 'pre.pkl', 'wb') as f:
-                        pickle.dump(self.dp.myXLCInfo.LIST_PRE, f)
-
-                    with open(self.dp.myCFG.D1_PATH_EXPORT + 'frag.pkl', 'wb') as f:
-                        pickle.dump(self.dp.myXLCInfo.LIST_FRAG, f)
-
-
             else:
                 pass
 
@@ -647,3 +637,9 @@ class CFunctionDrawDIACheck:
         self.__captainGetEvidence(listEvidence, listSeed, listIndex)
 
         self.__captainDrawDIACheck(listSeed, listEvidence, listIndex)
+
+        with open(self.dp.myCFG.D1_PATH_EXPORT + 'pre.pkl', 'wb') as f:
+            pickle.dump(self.dp.myXLCInfo.LIST_PRE, f)
+
+        with open(self.dp.myCFG.D1_PATH_EXPORT + 'frag.pkl', 'wb') as f:
+            pickle.dump(self.dp.myXLCInfo.LIST_FRAG, f)
