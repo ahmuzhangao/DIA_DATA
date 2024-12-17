@@ -320,7 +320,7 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
             index_key_b = 'b' + str(i + 1)
             charge = j + 1
             moz_b_ion = (mass_b_aa_sum + input_INI.MASS_PROTON_MONO * charge ) / charge
-            if i >1:
+            if i > -1:
                 ionTypeList.append(index_key_b + '+' * (charge))
                 ionMozList.append(moz_b_ion)
 
@@ -337,7 +337,7 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
             index_key_y = 'y' + str(i + 1)
             charge = j + 1
             moz_y_ion = (mass_y_aa_sum + input_INI.MASS_PROTON_MONO * charge + 18.0105633) / charge
-            if i > 1:
+            if i > -1:
                 ionTypeList.append(index_key_y + '+' * (charge))
                 ionMozList.append(moz_y_ion)
 
