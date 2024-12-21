@@ -1,5 +1,5 @@
 import re
-
+from tqdm import tqdm
 from MSTool import toolGetWord, toolGetWord1, toolCountCharInString, toolStr2List, toolGetIndexByWord, \
     toolGetNameFromPath
 from MSData import CFileMS1, CDataPack, CFileMS2
@@ -43,7 +43,7 @@ class CFunctionParseMS1:
 
                 i_MS1 = -1
 
-                for line in f.readlines():
+                for line in tqdm(f.readlines(),desc="Read MS1"):
 
                     len_line = len(line)
                     if len_line > 1:
@@ -108,8 +108,8 @@ class CFunctionParseMS2:
 
             prev_scan = None
             flag_repeat = 0
-            for line in lines:
-
+            for line in tqdm(lines, desc="Read MS2"):
+            # for line in lines:
                 if len(line) > 1:
 
                     if line.startswith('S'):
@@ -1486,7 +1486,8 @@ class CFunctionReadMSFraggerIDForCheck:
         fragment_type_list = []  # 暂存当前母离子对应子离子类型的列表
         fragment_loss_list = []  # 暂存当前母离子对应子离子的损失类型的列表
 
-        for line in lines:
+        for line in tqdm(lines, desc="Read MSFragger Library"):
+        # for line in lines:
 
             tmpFDR = 0
             transition_group_id = toolGetWord(line, i_SEQ_WITH_MOD, '\t') + '-' + toolGetWord(line, i_CHARGE, '\t')
@@ -1692,7 +1693,8 @@ class CFunctionReadMSFraggerPinIDForCheck:
 
         i_DECOY_FLAG = toolGetIndexByWord(content, 'Label', '\t')
 
-        for line in lines:
+        for line in tqdm(lines, desc="Read MSFragger Pin"):
+        # for line in lines:
 
             tmpFDR = 0
 
@@ -1730,7 +1732,7 @@ class CFunctionReadMSFraggerPinIDForCheck:
             # self.dp.myIDForDIACHeck.ID11_Protein_Ids.append(toolGetWord(line,i_Protein_ID,'\t'))
             self.dp.myIDForDIACHeck.ID12_Protein_Names.append(toolGetWord(line, i_Protein_Name, '\t'))
             # self.dp.myIDForDIACHeck.ID13_Genes.append(toolGetWord(line, i_Gene, '\t'))
-
+            self.dp.myIDForDIACHeck.ID22_TARGET.append(int(toolGetWord(line, i_DECOY_FLAG, '\t')))
             # self.dp.myIDForDIACHeck.ID14_RT_BEGIN.append(float(toolGetWord(line, i_RT_BEGIN, '\t')) * 60)
             # self.dp.myIDForDIACHeck.ID15_RT_END.append(float(toolGetWord(line, i_RT_STOP, '\t')) * 60)
 

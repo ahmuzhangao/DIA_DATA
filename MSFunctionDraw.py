@@ -1,6 +1,6 @@
 import math
 import pickle
-
+from  tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as pc
@@ -231,6 +231,14 @@ class CFunctionDrawDIACheck:
             MATRIX_PROFILE_FRAG = MATRIX_PROFILE_FRAG[frag_rank_list][:self.dp.myCFG.B7_FRAG_NUM]  # 取前12个元素
             FRAG_MOZ = [moz_frag[i] for i in frag_rank_list][:self.dp.myCFG.B7_FRAG_NUM]  # 取前12个元素
             FRAG_TYPE = [type_frag[i] for i in frag_rank_list][:self.dp.myCFG.B7_FRAG_NUM]
+            if len(FRAG_TYPE) < self.dp.myCFG.B7_FRAG_NUM:
+                TMP_FRAG = (self.dp.myCFG.B7_FRAG_NUM - len(FRAG_TYPE)) * ['*']
+                TMP_MOZ = (self.dp.myCFG.B7_FRAG_NUM - len(FRAG_TYPE)) * [0]
+                TMP_PROFILE =  np.zeros((self.dp.myCFG.B7_FRAG_NUM - len(FRAG_TYPE), MATRIX_PROFILE_FRAG.shape[1]))
+
+                FRAG_MOZ += TMP_MOZ
+                FRAG_TYPE += TMP_FRAG
+                MATRIX_PROFILE_FRAG = np.vstack((MATRIX_PROFILE_FRAG, TMP_PROFILE))
         else:
             MATRIX_PROFILE_FRAG = MATRIX_PROFILE_FRAG[frag_rank_list]  # 取前12个元素
             FRAG_MOZ = [moz_frag[i] for i in frag_rank_list] # 取前12个元素
@@ -590,7 +598,8 @@ class CFunctionDrawDIACheck:
     def __captainDrawDIACheck(self, inputListSeed, inputListEvidence, inputListIndex):
 
         # 遍历结果列表中所有鉴定结果，对每一个结果分别画结果的library色谱曲线图和在结果rt_start到rt_end保留时间范围内的PSM标图
-        for tmp_i in range(len(inputListIndex)):
+        for tmp_i in tqdm(range(len(inputListIndex)),desc="Get DIA Curve Information"):
+        # for tmp_i in range(len(inputListIndex)):
             if inputListSeed[tmp_i]:  # 有的鉴定结果可能是无效的（如不存在文件名）
                 tmp_index = inputListIndex[tmp_i]
                 tmp_seed = inputListSeed[tmp_i]
@@ -609,7 +618,7 @@ class CFunctionDrawDIACheck:
                     # 下面这行代码是错误的，得到的是最大的一个ms2谱图moz，因为对于不同长度的列表转化成numpy数组，得到的不是二维数组
                     # 而是以列表为元素的一维数组，对齐进行max操作返回的是值最大的那个列表而不是所有ms2谱图moz列表中最大的数值
                     # max_peak = np.max(np.array(tmp_evidence.MATRIX_MS2_PEAK_MOZ[tmp_evidence.RT_START:tmp_evidence.RT_END]).reshape([-1,]))
-                    for i in range(num_label):
+                    for i in tqdm(range(num_label), desc="Draw DIA Curve"):
                         i_label = i
                         self.__soliderDrawPSMLabel(i_label, tmp_seed, tmp_evidence, tmp_index, gs, max_peak)  # 画RT范围上ms2谱图的标图
                     run_precursor_id = self.dp.myIDForDIACHeck.ID00_RUN[tmp_index] + '_' + self.dp.myIDForDIACHeck.ID8_PRECURSOR_ID[tmp_index]
