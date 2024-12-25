@@ -1488,100 +1488,100 @@ class CFunctionReadMSFraggerIDForCheck:
 
         for line in tqdm(lines, desc="Read MSFragger Library"):
         # for line in lines:
+            if toolGetWord(line, i_RT, '\t'):
+                tmpFDR = 0
+                transition_group_id = toolGetWord(line, i_SEQ_WITH_MOD, '\t') + '-' + toolGetWord(line, i_CHARGE, '\t')
 
-            tmpFDR = 0
-            transition_group_id = toolGetWord(line, i_SEQ_WITH_MOD, '\t') + '-' + toolGetWord(line, i_CHARGE, '\t')
+                if pre_transition_group_id != transition_group_id:
 
-            if pre_transition_group_id != transition_group_id:
+                    pre_transition_group_id = transition_group_id
 
-                pre_transition_group_id = transition_group_id
-
-                if len(fragment_moz_list) != 0:
-                    self.dp.myIDForDIACHeck.ID18_FRAGMENT_TYPE.append(fragment_type_list)
-                    self.dp.myIDForDIACHeck.ID19_FRAGMENT_MOZ_EXP.append(fragment_moz_list)
-                    self.dp.myIDForDIACHeck.ID21_FRAGMENT_LOSS_TYPE.append(fragment_loss_list)
-                fragment_type_list = []
-                fragment_moz_list = []
-                fragment_loss_list = []
-                fragment_type_1 = toolGetWord(line, i_FRAGMENT_TYPE_1, '\t')
-                fragment_type_2 = toolGetWord(line, i_FRAGMENT_TYPE_2, '\t')
-                fragment_type_3 = toolGetWord(line, i_FRAGMENT_TYPE_3, '\t')
-                if int(fragment_type_3) >= 3:
-                    pass
-                else:
-
-                    fragment_moz_list.append(float(toolGetWord(line, i_FRAGMENT_MOZ_EXP, '\t')))
-                    loss_type = toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t')
-                    if '-' not in loss_type:
-                        fragment_loss_list.append('NOLOSS')
+                    if len(fragment_moz_list) != 0:
+                        self.dp.myIDForDIACHeck.ID18_FRAGMENT_TYPE.append(fragment_type_list)
+                        self.dp.myIDForDIACHeck.ID19_FRAGMENT_MOZ_EXP.append(fragment_moz_list)
+                        self.dp.myIDForDIACHeck.ID21_FRAGMENT_LOSS_TYPE.append(fragment_loss_list)
+                    fragment_type_list = []
+                    fragment_moz_list = []
+                    fragment_loss_list = []
+                    fragment_type_1 = toolGetWord(line, i_FRAGMENT_TYPE_1, '\t')
+                    fragment_type_2 = toolGetWord(line, i_FRAGMENT_TYPE_2, '\t')
+                    fragment_type_3 = toolGetWord(line, i_FRAGMENT_TYPE_3, '\t')
+                    if int(fragment_type_3) >= 3:
+                        pass
                     else:
-                        fragment_loss_list.append(toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t'))
-                raw_name = self.dp.myCFG.A1_PATH_MS1.split('\\')[-1].replace('.ms1', '')
 
-                seq_with_mod = toolGetWord(line, i_SEQ_WITH_MOD, '\t')
-                seq = toolGetWord(line, i_SEQ, '\t')
-                charge = int(toolGetWord(line, i_CHARGE, '\t'))
+                        fragment_moz_list.append(float(toolGetWord(line, i_FRAGMENT_MOZ_EXP, '\t')))
+                        loss_type = toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t')
+                        if '-' not in loss_type:
+                            fragment_loss_list.append('NOLOSS')
+                        else:
+                            fragment_loss_list.append(toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t'))
+                    raw_name = self.dp.myCFG.A1_PATH_MS1.split('\\')[-1].replace('.ms1', '')
 
-                mod_dict = self.__soldierParseMOD2(seq_with_mod)
+                    seq_with_mod = toolGetWord(line, i_SEQ_WITH_MOD, '\t')
+                    seq = toolGetWord(line, i_SEQ, '\t')
+                    charge = int(toolGetWord(line, i_CHARGE, '\t'))
 
-                self.dp.myIDForDIACHeck.PSM_LINE_C.append(line.strip('\n'))
+                    mod_dict = self.__soldierParseMOD2(seq_with_mod)
 
-                self.dp.myIDForDIACHeck.ID0_SEQ.append(toolGetWord(line, i_SEQ, '\t'))
+                    self.dp.myIDForDIACHeck.PSM_LINE_C.append(line.strip('\n'))
 
-                self.dp.myIDForDIACHeck.ID00_RUN.append(raw_name)
+                    self.dp.myIDForDIACHeck.ID0_SEQ.append(toolGetWord(line, i_SEQ, '\t'))
 
-                self.dp.myIDForDIACHeck.ID1_RAW_NAME.append(raw_name)
+                    self.dp.myIDForDIACHeck.ID00_RUN.append(raw_name)
 
-                #单位是分钟
-                self.dp.myIDForDIACHeck.ID3_RT_APEX.append(float(toolGetWord(line, i_RT, '\t')))
+                    self.dp.myIDForDIACHeck.ID1_RAW_NAME.append(raw_name)
 
-                #seq+mod：mod在seq的对应位置中间，例如：AAAGDLGGDHLAFSC(UniMod:4)DVAK
-                self.dp.myIDForDIACHeck.ID4_SEQ_WITH_MOD.append(self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')))
+                    #单位是分钟
+                    self.dp.myIDForDIACHeck.ID3_RT_APEX.append(float(toolGetWord(line, i_RT, '\t')))
 
-                self.dp.myIDForDIACHeck.ID5_PRECURSOR_MOZ_EXP.append(float(toolGetWord(line, i_PRECURSOR_MOZ_EXP, '\t')))
-                self.dp.myIDForDIACHeck.ID6_PRECURSOR_MOZ_CLC.append(VALUE_ILLEGAL)
+                    #seq+mod：mod在seq的对应位置中间，例如：AAAGDLGGDHLAFSC(UniMod:4)DVAK
+                    self.dp.myIDForDIACHeck.ID4_SEQ_WITH_MOD.append(self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')))
 
-                self.dp.myIDForDIACHeck.ID7_CHARGE.append(int(toolGetWord(line, i_CHARGE, '\t')))
+                    self.dp.myIDForDIACHeck.ID5_PRECURSOR_MOZ_EXP.append(float(toolGetWord(line, i_PRECURSOR_MOZ_EXP, '\t')))
+                    self.dp.myIDForDIACHeck.ID6_PRECURSOR_MOZ_CLC.append(VALUE_ILLEGAL)
 
-                # raw+seq+mod+charge：raw在最前面，mod在seq的对应位置中间，charge在seq后面，例如：CNCP2023_cpnl_480_hela_HRDIA_2_AAAGDLGGDHLAFSC(UniMod:4)DVAK3
-                self.dp.myIDForDIACHeck.ID8_PRECURSOR_ID.append(raw_name + '_' + self.__soldierParseMOD(seq_with_mod) + str(charge))
+                    self.dp.myIDForDIACHeck.ID7_CHARGE.append(int(toolGetWord(line, i_CHARGE, '\t')))
 
-                self.dp.myIDForDIACHeck.ID9_SCORE0.append(tmpFDR)
+                    # raw+seq+mod+charge：raw在最前面，mod在seq的对应位置中间，charge在seq后面，例如：CNCP2023_cpnl_480_hela_HRDIA_2_AAAGDLGGDHLAFSC(UniMod:4)DVAK3
+                    self.dp.myIDForDIACHeck.ID8_PRECURSOR_ID.append(raw_name + '_' + self.__soldierParseMOD(seq_with_mod) + str(charge))
 
-                self.dp.myIDForDIACHeck.ID12_Protein_Names.append(toolGetWord(line, i_Protein_Name, '\t'))
-                self.dp.myIDForDIACHeck.ID13_Genes.append(toolGetWord(line, i_Gene, '\t'))
+                    self.dp.myIDForDIACHeck.ID9_SCORE0.append(tmpFDR)
 
-                # seq+mod+charge：mod在seq的对应位置中间，charge在seq后面，例如：AAAGDLGGDHLAFSC(UniMod:4)DVAK3
-                self.dp.myIDForDIACHeck.ID17_SEQ_WITH_MOD_AND_CHARGE.append(self.__soldierParseMOD(seq_with_mod) + str(charge))
+                    self.dp.myIDForDIACHeck.ID12_Protein_Names.append(toolGetWord(line, i_Protein_Name, '\t'))
+                    self.dp.myIDForDIACHeck.ID13_Genes.append(toolGetWord(line, i_Gene, '\t'))
 
-                MOD = ''
-                mod_type = ''
-                mod_site = ''
-                for i_key in mod_dict.keys():
-                    i_value = mod_dict[i_key]
-                    MOD += str(i_key) + ',' + str(i_value) + ';'
-                    mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
-                    mod_site += str(i_key) + ';'
+                    # seq+mod+charge：mod在seq的对应位置中间，charge在seq后面，例如：AAAGDLGGDHLAFSC(UniMod:4)DVAK3
+                    self.dp.myIDForDIACHeck.ID17_SEQ_WITH_MOD_AND_CHARGE.append(self.__soldierParseMOD(seq_with_mod) + str(charge))
 
-                #格式是：modsite,modtype;
-                self.dp.myIDForDIACHeck.ID16_MOD.append(mod_dict)
+                    MOD = ''
+                    mod_type = ''
+                    mod_site = ''
+                    for i_key in mod_dict.keys():
+                        i_value = mod_dict[i_key]
+                        MOD += str(i_key) + ',' + str(i_value) + ';'
+                        mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                        mod_site += str(i_key) + ';'
 
-                self.dp.myIDForDIACHeck.N_ID = self.dp.myIDForDIACHeck.N_ID + 1
+                    #格式是：modsite,modtype;
+                    self.dp.myIDForDIACHeck.ID16_MOD.append(mod_dict)
 
-            else:
-                fragment_type_1 = toolGetWord(line, i_FRAGMENT_TYPE_1, '\t')
-                fragment_type_2 = toolGetWord(line, i_FRAGMENT_TYPE_2, '\t')
-                fragment_type_3 = toolGetWord(line, i_FRAGMENT_TYPE_3, '\t')
-                if int(fragment_type_3) >= 3:
-                    pass
+                    self.dp.myIDForDIACHeck.N_ID = self.dp.myIDForDIACHeck.N_ID + 1
+
                 else:
-                    fragment_type_list.append(fragment_type_1 + fragment_type_2 + '+' * int(fragment_type_3))
-                    fragment_moz_list.append(float(toolGetWord(line, i_FRAGMENT_MOZ_EXP, '\t')))
-                    loss_type = toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t')
-                    if '-' not in loss_type:
-                        fragment_loss_list.append('NOLOSS')
+                    fragment_type_1 = toolGetWord(line, i_FRAGMENT_TYPE_1, '\t')
+                    fragment_type_2 = toolGetWord(line, i_FRAGMENT_TYPE_2, '\t')
+                    fragment_type_3 = toolGetWord(line, i_FRAGMENT_TYPE_3, '\t')
+                    if int(fragment_type_3) >= 3:
+                        pass
                     else:
-                        fragment_loss_list.append(toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t'))
+                        fragment_type_list.append(fragment_type_1 + fragment_type_2 + '+' * int(fragment_type_3))
+                        fragment_moz_list.append(float(toolGetWord(line, i_FRAGMENT_MOZ_EXP, '\t')))
+                        loss_type = toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t')
+                        if '-' not in loss_type:
+                            fragment_loss_list.append('NOLOSS')
+                        else:
+                            fragment_loss_list.append(toolGetWord(line, i_FRAGMENT_LOSS_TYPE, '\t'))
 
         if len(fragment_moz_list) != 0:
             self.dp.myIDForDIACHeck.ID18_FRAGMENT_TYPE.append(fragment_type_list)
