@@ -1,7 +1,7 @@
 import datetime
 from MSData import CDataPack
 from MSLogging import INFO_TO_USER_Staff, logToUser,logGetError
-from MSFlow import CFlow0,CFlow2
+from MSFlow import CFlow0, CFlow2, CFlow3
 from MSFunction import CFunctionConfig
 from MSSystem import CFG_TYPE_FLOW, TIME_EXPIRATION
 
@@ -44,6 +44,10 @@ class CStaff:
             if self.dp.myCFG.C0_TYPE_FLOW ==CFG_TYPE_FLOW['DIA_Evidence_Check']:
                 flow2 = CFlow2(self.dp)
                 flow2.run()
+
+            elif self.dp.myCFG.C0_TYPE_FLOW ==CFG_TYPE_FLOW['DIA_Rerank']:
+                flow3 = CFlow3(self.dp)
+                flow3.run()
 
             else:
                 logGetError("Get wrong TYPE_QUANT: " + str(self.dp.myCFG.C0_TYPE_FLOW))

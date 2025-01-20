@@ -10,7 +10,7 @@ INFO_TO_USER_CTaskCreateLibrary = (
 
 INFO_TO_USER_Staff = (
 
-    '\n[{}] Copyright 2024 Beihang University by Andrew Gu. All rights reserved. Version 2024.4.'.format(SOFTWARE_NAME),
+    '\n[{}] Copyright 2025 Beihang University by Zhano Ap. All rights reserved. Version 2025.12.'.format(SOFTWARE_NAME),
     '\n[{}] LICENSE is invalid! Please send e-mail to pQuant-DIA@126.com for the valid version.'.format(SOFTWARE_NAME),
     '\n[{}] Warning! The current license will expired in 7 days. Please send e-mail to pQuant-DIA@126.com for the new version.'.format(SOFTWARE_NAME),
     '\n[{}] Writing config file in the folder...'.format(SOFTWARE_NAME),
@@ -47,12 +47,12 @@ INFO_TO_USER_Flow3 = (
 
     '\n[{}] <Flow DIA Evidence Check> Checking the environment...'.format(SOFTWARE_NAME),
     '\n[{}] <Flow DIA Evidence Check> Reading ini files...'.format(SOFTWARE_NAME),
-    '\n[{}] <Flow DIA Evidence Check> Reading identification files for generating training Data...'.format(SOFTWARE_NAME),
-    '\n[{}] <Flow DIA Evidence Check> Classifying PSM according to precursor ID...'.format(SOFTWARE_NAME),
+    '\n[{}] <Flow DIA Evidence Check> Reading identification files for evidence check...'.format(SOFTWARE_NAME),
     '\n[{}] <Flow DIA Evidence Check> Reading MS1 files (The first run will take a few minutes)...'.format(SOFTWARE_NAME),
     '\n[{}] <Flow DIA Evidence Check> Reading MS2 files (The first run will take a few minutes)...'.format(SOFTWARE_NAME),
-    '\n[{}] <Flow DIA Evidence Check> Generating training Data...'.format(SOFTWARE_NAME),
-    '\n[{}] <Flow DIA Evidence Check> Predicting MS2 from identifications...'.format(SOFTWARE_NAME),
+    '\n[{}] <Flow DIA Evidence Check> Getting DIA Feature...'.format(SOFTWARE_NAME),
+    '\n[{}] <Flow DIA Evidence Check> Reranking DIA identification...'.format(SOFTWARE_NAME),
+    '\n[{}] <Flow DIA Evidence Check> Report DIA Rerank...'.format(SOFTWARE_NAME),
 )
 
 INFO_TO_USER_TaskReadID = (

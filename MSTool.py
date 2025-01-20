@@ -1,3 +1,5 @@
+import numpy as np
+
 from MSLogging import logGetError
 import bisect
 import numpy
@@ -320,3 +322,32 @@ def toolCosineForList(list_a, list_b):
         cos = num / denom
         sim = 0.5 + 0.5 * cos
     return sim
+
+def toolMaxContinueBY(flagList: list):
+    maxLen = 0
+    tmpLen = 0
+    for i in flagList:
+        if i == 1:
+            tmpLen += 1
+            if tmpLen > maxLen:
+                maxLen = tmpLen
+        else:
+            tmpLen = 0
+    return maxLen
+
+def toolPearsonForNumpy(X, Y):
+    Array_len = X.shape[0]
+    X_mean = X.sum() / Array_len
+    Y_mean = Y.sum() / Array_len
+    pearson = np.dot(X - X_mean, Y - Y_mean) / (
+            np.sqrt(np.dot(X - X_mean, X - X_mean) * np.dot(Y - Y_mean, Y - Y_mean)) + 1e-6)
+    return pearson
+
+def toolSpearmanForNumpy(X, Y):
+    Array_len = X.shape[0]
+    x_argsort = np.argsort(X)
+    y_argsort = np.argsort(Y)
+
+    fenzi = np.dot((x_argsort - y_argsort), (x_argsort - y_argsort).T)
+
+    return 1 - (6 * fenzi) / (Array_len * (Array_len ** 2 - 1))

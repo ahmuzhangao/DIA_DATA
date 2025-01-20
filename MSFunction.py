@@ -322,6 +322,10 @@ class CFunctionConfig:
 
             cfg.I2_INI_PATH_MOD = str_value
 
+        elif "INI_PATH_ADI_MOD" == str_name:
+
+            cfg.I3_INI_PATH_ADI_MOD = str_value
+
         elif "FLAG_DYNAMIC_LIBRARY" == str_name:
 
             cfg.B5_FLAG_DYNAMIC_LIBRARY = int(str_value)
@@ -1691,6 +1695,7 @@ class CFunctionReadMSFraggerPinIDForCheck:
 
         i_Protein_Name = toolGetIndexByWord(content, 'Proteins', '\t')
 
+        i_Hyper_Score = toolGetIndexByWord(content, 'hyperscore', '\t')
         i_DECOY_FLAG = toolGetIndexByWord(content, 'Label', '\t')
 
         for line in tqdm(lines, desc="Read MSFragger Pin"):
@@ -1712,6 +1717,8 @@ class CFunctionReadMSFraggerPinIDForCheck:
 
             self.dp.myIDForDIACHeck.ID1_RAW_NAME.append(raw_name)
 
+            self.dp.myIDForDIACHeck.ID23_SCORE.append(float(toolGetWord(line, i_Hyper_Score, '\t')))
+
             #单位是分钟
             self.dp.myIDForDIACHeck.ID3_RT_APEX.append(float(toolGetWord(line, i_RT, '\t'))*60)
 
@@ -1732,7 +1739,13 @@ class CFunctionReadMSFraggerPinIDForCheck:
             # self.dp.myIDForDIACHeck.ID11_Protein_Ids.append(toolGetWord(line,i_Protein_ID,'\t'))
             self.dp.myIDForDIACHeck.ID12_Protein_Names.append(toolGetWord(line, i_Protein_Name, '\t'))
             # self.dp.myIDForDIACHeck.ID13_Genes.append(toolGetWord(line, i_Gene, '\t'))
-            self.dp.myIDForDIACHeck.ID22_TARGET.append(int(toolGetWord(line, i_DECOY_FLAG, '\t')))
+            if toolGetWord(line, i_DECOY_FLAG, '\t') == '-1':
+                self.dp.myIDForDIACHeck.ID22_TARGET.append(0)
+            elif toolGetWord(line, i_DECOY_FLAG, '\t') == '1':
+                self.dp.myIDForDIACHeck.ID22_TARGET.append(1)
+            else:
+                self.dp.myIDForDIACHeck.ID22_TARGET.append(-1)
+
             # self.dp.myIDForDIACHeck.ID14_RT_BEGIN.append(float(toolGetWord(line, i_RT_BEGIN, '\t')) * 60)
             # self.dp.myIDForDIACHeck.ID15_RT_END.append(float(toolGetWord(line, i_RT_STOP, '\t')) * 60)
 

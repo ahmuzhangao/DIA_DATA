@@ -102,6 +102,7 @@ class CFileIDForDIACheck:  # 注意：这是按列存储，每个属性都是lis
     ID21_FRAGMENT_LOSS_TYPE = []
 
     ID22_TARGET = []
+    ID23_SCORE = []
 
     MOD1_DICT_PSM = {}
 
@@ -116,10 +117,22 @@ class CFileIDForDIACheck:  # 注意：这是按列存储，每个属性都是lis
     PSM_LINE_T = []  # 一般就一行，就是一个字符串。纯是为了实现定量结果在定性的基础上往后加。
     PSM_LINE_C = []
 
+class CFeature:
+    FEATURE_MATRIX = []
+
+    FEATURE_MATRIX_NONORM = []
+
+    FEATURE_MATRIX_PROFILE = []
+
+    LABEL_LIST = []
+
+    ID_INDEX_LIST = []
+
 class Config:
     I0_INI_PATH_ELEMENT = 'element.ini'
     I1_INI_PATH_AA = 'aa.ini'
     I2_INI_PATH_MOD = 'modification.ini'
+    I3_INI_PATH_ADI_MOD = 'additional_mod.ini'
 
     A0_FLAG_USE_EXIST_INDEX = 1
     A1_PATH_MS1 = ''  # 里面有多个文件
@@ -159,6 +172,7 @@ class CFileMS1:
 
     LIST_RET_TIME = []
     LIST_ION_INJECTION_TIME = []
+
 
     MATRIX_PEAK_MOZ = []  # 每一行是个list
     MATRIX_PEAK_INT = []
@@ -211,6 +225,32 @@ class CSeed:  # 为得到Evidence准备的，Labeling只需要这就可以了。
     INDEX_MONO = 0  # 上面几根峰，哪根是mono
 
     CenterMoz = -1
+
+class CSeedRerank:  # 为得到Evidence准备的，Labeling只需要这就可以了。LabelFree还需要个Reference。
+
+    MID_SCAN = 0  # 根据需求不同，使用scan或rt
+    MID_RT = 0
+
+    DICT_COMPOSITION = {}  # 这个有时也需要
+
+    DIS_ISO_MOZ_CLC = []  # 母离子理论质量
+    DIS_ISO_INT_CLC = []  # 母离子理论强度
+
+    DIS_FRA_MOZ_CLC = []
+    DIS_FRA_INT_CLC = [] # 用Prosit预测理论强度
+    DIS_FRA_TYPE_CLC = [] # 例：b3++（目前考虑一价和二价）
+
+    DIS_RES_TYPE_CLC = []
+    DIS_RES_MOZ_CLC = []
+    DIS_TOP6_TYPE_CLC = []
+    DIS_TOP6_MOZ_CLC = []
+    DIS_FRA_MOZ_ADD_CLC = [] # 只考虑top6
+    DIS_FRA_MOZ_SUB_CLC = []
+
+    INDEX_MONO = 0  # 上面几根峰，哪根是mono
+
+    CenterMoz = -1
+
 
 class CEvidence:
     # 这是第二批要填的信息
@@ -277,6 +317,29 @@ class CXLCInfo:
     LIST_PRE = []
     LIST_FRAG = []
 
+
+class CResult:
+    N_RESULT = 0
+
+    RE0_RAW_NAME = []
+    RE1_SEQ = []
+    RE2_SCAN_NO = []
+    RE3_RT = []
+
+    RE4_MOD = []
+    RE5_PRECURSOR_MOZ_CLC = []
+    RE6_CHARGE = []
+    RE7_PRECURSOR_ID = []
+
+    RE8_SCORE0 = []  # finall score
+    RE9_SCORE1 = []  # first DIA-NN score before Rerank
+    RE10_SCORE_RERANK = []
+    RE11_TARGET = []
+    RE12_FEATURE = []
+
+    RE13_LOSS = []
+    RE14_EPOCH = []
+
 class CDataPack:
     myCFG = Config()
     myINI = CINI()
@@ -285,6 +348,8 @@ class CDataPack:
     myID = CFileID()  # 从鉴定结果到seed，seed到evidence，这两个就当临时变量了。如果需要输出，直接写到文件里，不全周期维护了。
     myIDForDIACHeck = CFileIDForDIACheck()
     myXLCInfo = CXLCInfo()
+    myFeature = CFeature()
+    myResult = CResult()
 
     LIST_PATH_MS = [] # 单纯存一下raw名
     LIST_PATH_MS1 = []  # ms1文件

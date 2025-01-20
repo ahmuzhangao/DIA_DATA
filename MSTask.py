@@ -1,8 +1,9 @@
 import os
 from MSFunctionDraw import CFunctionDrawDIACheck
+from MSFunctionRerank import CFunctionDIARerankFeature, CFunctionDIARerank, CFunctionDIAReport
 from MSLogging import logGetError, INFO_TO_USER_TaskReadMS1, INFO_TO_USER_TaskReadID, INFO_TO_USER_TaskReadMS2
-from MSSystem import CFG_TYPE_MS1, CFG_TYPE_IDENTIFICATION_RESULT, CFG_TYPE_MS2
-from MSOperator import op_FILL_LIST_PATH_MS, op_FILL_LIST_PATH_ID
+from MSSystem import CFG_TYPE_MS1, CFG_TYPE_IDENTIFICATION_RESULT, CFG_TYPE_MS2, UNIMOID_TO_STANDARD_MOD
+from MSOperator import op_FILL_LIST_PATH_MS, op_FILL_LIST_PATH_ID, op_FILL_DIC_ADDITIONAL_MOD
 from MSFunction import CFunctionParseMS1, CFunctionINI, CFunctionParseMS2, CFunctionReadApuQuantIDForCheck, \
     CFunctionReadDIANNIDForCheck, CFunctionReadDIANNLibIDForCheck, CFunctionReadMSFraggerPinIDForCheck, \
     CFunctionReadMSFraggerIDForCheck
@@ -86,8 +87,6 @@ class CTaskReadMS2:
                 functionParseMS2 = CFunctionParseMS2(self.dp)
                 functionParseMS2.ms2topkl(path)
 
-
-
 class CTaskReadIDForDIACheck:
 
     def __init__(self, inputDP: CDataPack):
@@ -97,6 +96,7 @@ class CTaskReadIDForDIACheck:
     def work(self):
 
         op_FILL_LIST_PATH_ID(self.dp.myCFG.B1_PATH_IDENTIFICATION_RESULT, self.dp.LIST_PATH_ID)
+        op_FILL_DIC_ADDITIONAL_MOD(self.dp.myCFG.I3_INI_PATH_ADI_MOD,UNIMOID_TO_STANDARD_MOD)
 
         if self.dp.myCFG.B2_TYPE_IDENTIFICATION_RESULT == CFG_TYPE_IDENTIFICATION_RESULT['DIA-NN']:
             N_ID = 0
@@ -157,3 +157,36 @@ class CTaskDrawForDIACheck:
         functionDrawDIACheck = CFunctionDrawDIACheck(self.dp)
         functionDrawDIACheck.draw()
 
+class CTaskForDIARerankFeature:
+
+    def __init__(self, inputDP: CDataPack):
+
+        self.dp = inputDP
+
+    def work(self):
+
+        functionDIARerankFeature = CFunctionDIARerankFeature(self.dp)
+        functionDIARerankFeature.feature()
+
+
+class CTaskForDIARerank:
+
+    def __init__(self, inputDP: CDataPack):
+
+        self.dp = inputDP
+
+    def work(self):
+
+        functionDIARerank = CFunctionDIARerank(self.dp)
+        functionDIARerank.rerank()
+
+class CTaskForDIAReport:
+
+    def __init__(self, inputDP: CDataPack):
+
+        self.dp = inputDP
+
+    def work(self):
+
+        functionDIAReport = CFunctionDIAReport(self.dp)
+        functionDIAReport.report()

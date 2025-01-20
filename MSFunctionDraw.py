@@ -25,7 +25,7 @@ class CFunctionDrawDIACheck:
     def __soliderCalFragMoz(self, iID):
         ionPrecursor = self.dp.myIDForDIACHeck.ID4_SEQ_WITH_MOD[iID]
 
-        ionTypeList, ionMozList = op_CAL_FRAGMENT_MOZ(self.dp.myINI, ionPrecursor)
+        ionTypeList, ionMozList, _, _ = op_CAL_FRAGMENT_MOZ(self.dp.myINI, ionPrecursor)
 
         return ionTypeList, ionMozList
 
@@ -618,11 +618,10 @@ class CFunctionDrawDIACheck:
                     # 下面这行代码是错误的，得到的是最大的一个ms2谱图moz，因为对于不同长度的列表转化成numpy数组，得到的不是二维数组
                     # 而是以列表为元素的一维数组，对齐进行max操作返回的是值最大的那个列表而不是所有ms2谱图moz列表中最大的数值
                     # max_peak = np.max(np.array(tmp_evidence.MATRIX_MS2_PEAK_MOZ[tmp_evidence.RT_START:tmp_evidence.RT_END]).reshape([-1,]))
-                    for i in tqdm(range(num_label), desc="Draw DIA Curve"):
+                    for i in range(num_label):
                         i_label = i
                         self.__soliderDrawPSMLabel(i_label, tmp_seed, tmp_evidence, tmp_index, gs, max_peak)  # 画RT范围上ms2谱图的标图
                     run_precursor_id = self.dp.myIDForDIACHeck.ID00_RUN[tmp_index] + '_' + self.dp.myIDForDIACHeck.ID8_PRECURSOR_ID[tmp_index]
-                    print(run_precursor_id)
                     plt.savefig(self.dp.myCFG.D1_PATH_EXPORT + run_precursor_id + '_' +
                                 IO_NAME_FILE_EXPORT_Flow2[0], format='png')
                     plt.savefig(self.dp.myCFG.D1_PATH_EXPORT + run_precursor_id + '_' +
@@ -632,8 +631,6 @@ class CFunctionDrawDIACheck:
                     self.__soliderGetDIACurve(tmp_seed, tmp_evidence, tmp_index)  # 画母离子和Lib中by离子的色谱曲线
             else:
                 pass
-
-
 
     def draw(self):
 
@@ -652,3 +649,4 @@ class CFunctionDrawDIACheck:
 
         with open(self.dp.myCFG.D1_PATH_EXPORT + 'frag.pkl', 'wb') as f:
             pickle.dump(self.dp.myXLCInfo.LIST_FRAG, f)
+

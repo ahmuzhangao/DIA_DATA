@@ -5,8 +5,8 @@ from MSLogging import logGetError
 import os
 from MSTool import toolCountCharInString, toolGetWord
 from MSSystem import UNIMOID_TO_STANDARD_MOD, CFG_TYPE_EXPORT, FRAGMENT_LOSS_TYPE_COMP, MARKER_SPLIT_MOD_LIST, \
-    CFG_TYPE_ACCURACY_HALF_WIN_PEAK
-from MSData import CFileMS1, CFileMS2, CINI, CEvidenceDIACheck, CSeed, CDataPack, Config, CFileID, CQuantInfo, CRTBetweenExp
+    CFG_TYPE_ACCURACY_HALF_WIN_PEAK, MASS_PROTON_MONO
+from MSData import CFileMS1, CFileMS2, CINI, CEvidenceDIACheck, CSeed, CDataPack, Config, CFileID, CQuantInfo, CRTBetweenExp,CSeedRerank
 
 VALUE_ILLEGAL = -7.16
 VALUE_MAX_SCAN = 2000000
@@ -306,6 +306,8 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
 
     ionTypeList = []
     ionMozList = []
+    ionMozAddList = []
+    ionMozSubList = []
     chargMax = 2
     for j in range(chargMax):
         mass_b_aa_sum = 0.0
@@ -320,9 +322,13 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
             index_key_b = 'b' + str(i + 1)
             charge = j + 1
             moz_b_ion = (mass_b_aa_sum + input_INI.MASS_PROTON_MONO * charge ) / charge
+            moz_b_ion_add = (moz_b_ion + MASS_PROTON_MONO) / charge
+            moz_b_ion_sub = (moz_b_ion - MASS_PROTON_MONO) / charge
             if i > 1:
                 ionTypeList.append(index_key_b + '+' * (charge))
                 ionMozList.append(moz_b_ion)
+                ionMozAddList.append(moz_b_ion_add)
+                ionMozSubList.append(moz_b_ion_sub)
 
     for j in range(chargMax):
         mass_y_aa_sum = 0.0
@@ -337,11 +343,15 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
             index_key_y = 'y' + str(i + 1)
             charge = j + 1
             moz_y_ion = (mass_y_aa_sum + input_INI.MASS_PROTON_MONO * charge + 18.0105633) / charge
+            moz_y_ion_add = (moz_y_ion + MASS_PROTON_MONO) / charge
+            moz_y_ion_sub = (moz_y_ion - MASS_PROTON_MONO) / charge
             if i > 1:
                 ionTypeList.append(index_key_y + '+' * (charge))
                 ionMozList.append(moz_y_ion)
+                ionMozAddList.append(moz_y_ion_add)
+                ionMozSubList.append(moz_y_ion_sub)
 
-    return ionTypeList, ionMozList
+    return ionTypeList, ionMozList, ionMozAddList, ionMozSubList
 
 def opGetStartAndEndForProfile(input_profile, input_seed, input_cutoff, input_n_hole):  # 就这个名字格式特殊
 
@@ -857,12 +867,33 @@ def op_INIT_CSEED_DIACHECK(CSeed):
 
     CSeed.MID_RT = VALUE_ILLEGAL
     CSeed.MID_SCAN = VALUE_ILLEGAL
+
     CSeed.DIS_ISO_MOZ_CLC = []  # 母离子理论质量
     CSeed.DIS_ISO_INT_CLC = []  # 母离子理论强度
 
     CSeed.DIS_FRA_MOZ_CLC = []
     CSeed.DIS_FRA_INT_CLC = []  # 留着，预计用Prosit预测理论强度
     CSeed.DIS_FRA_TYPE_CLC = []  # 例：b3++（目前考虑一价和二价）
+
+
+def op_INIT_CSEED_RERANK_DIACHECK(CSeedRerank):
+
+    CSeedRerank.MID_RT = VALUE_ILLEGAL
+    CSeedRerank.MID_SCAN = VALUE_ILLEGAL
+
+    CSeedRerank.DIS_ISO_MOZ_CLC = []  # 母离子理论质量
+    CSeedRerank.DIS_ISO_INT_CLC = []  # 母离子理论强度
+
+    CSeedRerank.DIS_FRA_MOZ_CLC = []
+    CSeedRerank.DIS_FRA_INT_CLC = []  # 留着，预计用Prosit预测理论强度
+    CSeedRerank.DIS_FRA_TYPE_CLC = []  # 例：b3++（目前考虑一价和二价）
+
+    CSeedRerank.DIS_RES_TYPE_CLC = []
+    CSeedRerank.DIS_RES_MOZ_CLC = []
+    CSeedRerank.DIS_TOP6_TYPE_CLC = []
+    CSeedRerank.DIS_TOP6_MOZ_CLC = []
+    CSeedRerank.DIS_FRA_MOZ_ADD_CLC = []
+    CSeedRerank.DIS_FRA_MOZ_SUB_CLC = []
 
 def op_ININT_CEVIDENCE_DIACHECK(CEvidence: CEvidenceDIACheck):
 
@@ -890,6 +921,12 @@ def op_SAVE_MATRIX_TO_CSV(matrix, filename):
         for row in matrix:
             csvwriter.writerow(row)
 
+def op_FILL_DIC_ADDITIONAL_MOD(additionalModPath,UNIMOID_TO_STANDARD_MOD):
+    with open(additionalModPath) as f:
+            lines = f.readlines()
+            for line in lines:
+                value = line.split('|')
+                UNIMOID_TO_STANDARD_MOD[value[0]] = value[1]
 
 def op_INIT_CDataPack(inputDP: CDataPack):
 

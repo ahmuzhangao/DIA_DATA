@@ -6,7 +6,7 @@ class CFunctionComposition:
     def __init__(self, inputDP):
         self.dp = inputDP
 
-    def getStrComposition(self, inputSeq, inputMod,  inputINI):
+    def getStrComposition(self, inputSeq, inputMod,  inputGLC,inputLIK,inputINI):
 
         result = 'H(2)O(1)'  # 写死的
 
@@ -21,11 +21,25 @@ class CFunctionComposition:
                 continue
 
         # modification
-        nMOD = toolCountCharInString(inputMod, ';')  # 标准形式为6,Carbamidomethyl[C];14,Carbamidomethyl[C];
+        nMOD = toolCountCharInString(inputMod, ';')# 标准形式为6,Carbamidomethyl[C];14,Carbamidomethyl[C];
+        nGLC = toolCountCharInString(inputGLC, ';')
+        nLINK = toolCountCharInString(inputLIK, ';')
         try:
             for iMOD in range(nMOD):
                 nameMOD = toolGetWord(toolGetWord(inputMod, iMOD, ';'), 1, ',')
                 result = result + inputINI.DICT2_MOD_COM[nameMOD][0]
+
+            for iGLC in range(nGLC):
+                nameGLC = toolGetWord(toolGetWord(inputGLC, iGLC, ';'), 1, ',')
+                if inputINI.DICT3_GLYCO_COM.__contains__(nameGLC):
+                    result = result + inputINI.DICT3_GLYCO_COM[nameGLC]
+                else:
+                    logGetWarning(inputGLC)
+
+            for iLINK in range(nLINK):
+                nameLINK = toolGetWord(toolGetWord(inputLIK, iLINK, ';'), 1, ',')
+                result = result + inputINI.DICT4_LINKER_COM[nameLINK]
+
         except:
             logToUser(INFO_TO_USER_FunctionComposition[0] + inputMod)
             logGetError(INFO_TO_USER_FunctionComposition[1])
