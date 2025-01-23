@@ -6,7 +6,7 @@ from MSData import CFileMS1, CDataPack, CFileMS2
 from MSOperator import op_INIT_CFILE_MS1, op_STANDARDIZE_MOD_BY_PRECURSOR, op_INIT_CFILE_MS2, op_preallocate_matrix, op_convert_peptdeep, op_STANDARDIZE_MOD_BY_PRECURSOR_SPECTORNAUT, \
     op_convert_spectronaut, op_convert_MaxDIA
 from MSLogging import logGetError
-from MSSystem import VALUE_ILLEGAL, UNIMOID_TO_STANDARD_MOD2
+from MSSystem import VALUE_ILLEGAL
 from MSSystem import UNIMOID_TO_STANDARD_MOD
 import pickle
 import os
@@ -591,7 +591,7 @@ class CFunctionParseIDForDIANN:
             for i_key in mod_dict.keys():
                 i_value = mod_dict[i_key]
                 MOD += str(i_key) + ',' + str(i_value) + ';'
-                mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                mod_type += str(i_value) + ';'
                 mod_site += str(i_key) + ';'
 
             #格式是：modsite,modtype;
@@ -1193,7 +1193,7 @@ class CFunctionReadDIANNIDForCheck:
             for i_key in mod_dict.keys():
                 i_value = mod_dict[i_key]
                 MOD += str(i_key) + ',' + str(i_value) + ';'
-                mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                mod_type += str(i_value) + ';'
                 mod_site += str(i_key) + ';'
 
             #格式是：modsite,modtype;
@@ -1366,7 +1366,7 @@ class CFunctionReadDIANNLibIDForCheck:
             for i_key in mod_dict.keys():
                 i_value = mod_dict[i_key]
                 MOD += str(i_key) + ',' + str(i_value) + ';'
-                mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                mod_type += str(i_value) + ';'
                 mod_site += str(i_key) + ';'
 
             #格式是：modsite,modtype;
@@ -1564,7 +1564,7 @@ class CFunctionReadMSFraggerIDForCheck:
                     for i_key in mod_dict.keys():
                         i_value = mod_dict[i_key]
                         MOD += str(i_key) + ',' + str(i_value) + ';'
-                        mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                        mod_type += str(i_value) + ';'
                         mod_site += str(i_key) + ';'
 
                     #格式是：modsite,modtype;
@@ -1758,7 +1758,7 @@ class CFunctionReadMSFraggerPinIDForCheck:
             for i_key in mod_dict.keys():
                 i_value = mod_dict[i_key]
                 MOD += str(i_key) + ',' + str(i_value) + ';'
-                mod_type += UNIMOID_TO_STANDARD_MOD2[str(i_value)] + ';'
+                mod_type += str(i_value) + ';'
                 mod_site += str(i_key) + ';'
 
             #格式是：modsite,modtype;

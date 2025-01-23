@@ -925,8 +925,9 @@ def op_FILL_DIC_ADDITIONAL_MOD(additionalModPath,UNIMOID_TO_STANDARD_MOD):
     with open(additionalModPath) as f:
             lines = f.readlines()
             for line in lines:
-                value = line.split('|')
+                value = line.strip().split('|')
                 UNIMOID_TO_STANDARD_MOD[value[0]] = value[1]
+
 
 def op_INIT_CDataPack(inputDP: CDataPack):
 

@@ -11,8 +11,8 @@ INFO_TO_USER_CTaskCreateLibrary = (
 INFO_TO_USER_Staff = (
 
     '\n[{}] Copyright 2025 Beihang University by Zhano Ap. All rights reserved. Version 2025.12.'.format(SOFTWARE_NAME),
-    '\n[{}] LICENSE is invalid! Please send e-mail to pQuant-DIA@126.com for the valid version.'.format(SOFTWARE_NAME),
-    '\n[{}] Warning! The current license will expired in 7 days. Please send e-mail to pQuant-DIA@126.com for the new version.'.format(SOFTWARE_NAME),
+    '\n[{}] LICENSE is invalid! Please send e-mail to Data-DIA@126.com for the valid version.'.format(SOFTWARE_NAME),
+    '\n[{}] Warning! The current license will expired in 7 days. Please send e-mail to Data-DIA@126.com for the new version.'.format(SOFTWARE_NAME),
     '\n[{}] Writing config file in the folder...'.format(SOFTWARE_NAME),
     '\n[{}] Finished!'.format(SOFTWARE_NAME),
 
