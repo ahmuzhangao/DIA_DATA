@@ -166,10 +166,7 @@ def op_FILL_LIST_PATH_ID(inputPath, inputList):
 def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='[]'):
     # 将DIA-NN带修饰的母离子转化为标准格式的修饰类型母离子:(UniMod:4)-> (Carbamidomethyl)
     # 如果(Unimod)和[mass]同时存在，则先把Unimod改了，再改[mass]，否则直接改[mass]即可
-    if 'UniMod' in input_precursor:
-        seperator_start, seperator_end = '(', ')'
-    else:
-        seperator_start, seperator_end = '[', ']'
+    seperator_start, seperator_end = '[', ']'
     new_precursor = ''
     site_start, site_end = 0, 0
     flag_in_mod = 0
@@ -182,7 +179,7 @@ def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='[]'):
             mod_type = input_precursor[site_start + 1:site_end]
 
             try:
-                mod_type_standard = UNIMOID_TO_STANDARD_MOD[mod_type]
+                mod_type_standard = mod_type
             except KeyError:
                 print(UNIMOID_TO_STANDARD_MOD)
                 print(mod_type)
@@ -194,32 +191,32 @@ def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='[]'):
         elif flag_in_mod == 0:
             new_precursor = new_precursor + char
 
-    if seperator_start == '(':
-        new_precursor = ''
-        site_start, site_end = 0, 0
-        flag_in_mod = 0
-        for i, char in enumerate(input_precursor):
-            if char == seperator_start:
-                site_start = i
-                flag_in_mod = 1
-            elif char == seperator_end:
-                site_end = i
-                mod_type = input_precursor[site_start + 1:site_end]
+    seperator_start, seperator_end = '(', ')'
+    new_precursor2 = ''
+    site_start, site_end = 0, 0
+    flag_in_mod = 0
+    for i, char in enumerate(new_precursor):
+        if char == seperator_start:
+            site_start = i
+            flag_in_mod = 1
+        elif char == seperator_end:
+            site_end = i
+            mod_type = new_precursor[site_start + 1:site_end]
 
-                try:
-                    mod_type_standard = UNIMOID_TO_STANDARD_MOD[mod_type]
-                except KeyError:
-                    print(UNIMOID_TO_STANDARD_MOD)
-                    print(mod_type)
-                    info = 'DIA-NN mod type has wrong, please check!'
-                    logGetError(info)
+            try:
+                mod_type_standard = UNIMOID_TO_STANDARD_MOD[mod_type]
+            except KeyError:
+                print(UNIMOID_TO_STANDARD_MOD)
+                print(mod_type)
+                info = 'DIA-NN mod type has wrong, please check!'
+                logGetError(info)
 
-                new_precursor = new_precursor + '(' + mod_type_standard + ')'
-                flag_in_mod = 0
-            elif flag_in_mod == 0:
-                new_precursor = new_precursor + char
+            new_precursor2 = new_precursor2 + '(' + mod_type_standard + ')'
+            flag_in_mod = 0
+        elif flag_in_mod == 0:
+            new_precursor2 = new_precursor2 + char
 
-    return new_precursor
+    return new_precursor2
 
 def op_STANDARDIZE_MOD_BY_PRECURSOR_SPECTORNAUT(input_precursor: str):
     # 将DIA-NN带修饰的母离子转化为标准格式的修饰类型母离子:(UniMod:4)-> (Carbamidomethyl)

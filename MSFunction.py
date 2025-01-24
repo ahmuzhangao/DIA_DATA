@@ -1540,6 +1540,7 @@ class CFunctionReadMSFraggerIDForCheck:
                     self.dp.myIDForDIACHeck.ID3_RT_APEX.append(float(toolGetWord(line, i_RT, '\t')))
 
                     #seq+mod：mod在seq的对应位置中间，例如：AAAGDLGGDHLAFSC(UniMod:4)DVAK
+                    a = self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t'))
                     self.dp.myIDForDIACHeck.ID4_SEQ_WITH_MOD.append(self.__soldierParseMOD(toolGetWord(line, i_SEQ_WITH_MOD, '\t')))
 
                     self.dp.myIDForDIACHeck.ID5_PRECURSOR_MOZ_EXP.append(float(toolGetWord(line, i_PRECURSOR_MOZ_EXP, '\t')))
