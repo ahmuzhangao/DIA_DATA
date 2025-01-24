@@ -1398,7 +1398,7 @@ class CFunctionReadMSFraggerIDForCheck:
     def __soldierParseMOD(self, inputStr):
         # 各个鉴定结果导出的修饰格式不一样，搞成一样的格式，方便后续处理
 
-        return op_STANDARDIZE_MOD_BY_PRECURSOR(inputStr)
+        return op_STANDARDIZE_MOD_BY_PRECURSOR(inputStr,flag='[]')
 
 
     def __soldierParseMOD2(self, inputStr):

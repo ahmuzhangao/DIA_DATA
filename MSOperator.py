@@ -163,12 +163,13 @@ def op_FILL_LIST_PATH_ID(inputPath, inputList):
 
 
 
-def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='()'):
+def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='[]'):
     # 将DIA-NN带修饰的母离子转化为标准格式的修饰类型母离子:(UniMod:4)-> (Carbamidomethyl)
-    if flag == '[]':
-        seperator_start, seperator_end = '[', ']'
-    else:
+    # 如果(Unimod)和[mass]同时存在，则先把Unimod改了，再改[mass]，否则直接改[mass]即可
+    if 'UniMod' in input_precursor:
         seperator_start, seperator_end = '(', ')'
+    else:
+        seperator_start, seperator_end = '[', ']'
     new_precursor = ''
     site_start, site_end = 0, 0
     flag_in_mod = 0
@@ -192,6 +193,31 @@ def op_STANDARDIZE_MOD_BY_PRECURSOR(input_precursor: str, flag='()'):
             flag_in_mod = 0
         elif flag_in_mod == 0:
             new_precursor = new_precursor + char
+
+    if seperator_start == '(':
+        new_precursor = ''
+        site_start, site_end = 0, 0
+        flag_in_mod = 0
+        for i, char in enumerate(input_precursor):
+            if char == seperator_start:
+                site_start = i
+                flag_in_mod = 1
+            elif char == seperator_end:
+                site_end = i
+                mod_type = input_precursor[site_start + 1:site_end]
+
+                try:
+                    mod_type_standard = UNIMOID_TO_STANDARD_MOD[mod_type]
+                except KeyError:
+                    print(UNIMOID_TO_STANDARD_MOD)
+                    print(mod_type)
+                    info = 'DIA-NN mod type has wrong, please check!'
+                    logGetError(info)
+
+                new_precursor = new_precursor + '(' + mod_type_standard + ')'
+                flag_in_mod = 0
+            elif flag_in_mod == 0:
+                new_precursor = new_precursor + char
 
     return new_precursor
 
@@ -302,8 +328,6 @@ def op_CAL_FRAGMENT_MOZ(input_INI: CINI, input_precursor: str):
     #顺序是：b1+ b2+ ... b1++ b2++ ... y1+ y2+ ... y1++ y2++ ...
     precursor_sequence, mod_dic = op_DIVIDE_MOD_FROM_PRECURSOR(input_precursor)
     ion_num = len(precursor_sequence)
-
-
     ionTypeList = []
     ionMozList = []
     ionMozAddList = []
